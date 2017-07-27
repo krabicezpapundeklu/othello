@@ -1,0 +1,19 @@
+#include "win_othello_res.h"
+#include "windows.h"
+
+IDI_ICON ICON "icons/othello.ico"
+
+IDM_MENU MENU
+BEGIN
+        POPUP "&Game"
+        BEGIN
+                MENUITEM "&New Game\tF2", IDM_NEW_GAME
+                MENUITEM SEPARATOR
+                MENUITEM "E&xit",         IDM_EXIT
+        END
+END
+
+IDA_ACC ACCELERATORS
+BEGIN
+        VK_F2,  IDM_NEW_GAME,   VIRTKEY
+END

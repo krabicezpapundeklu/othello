@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Othello</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      body { text-align: center; }
+      table {
+        margin-left: auto;
+        margin-right: auto;
+        -webkit-print-color-adjust: exact;
+      }
+      td { background: #008000; }
+      td.selected { background: #00AA00; }
+      td div {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+        background: transparent;  /* Disk colour. */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Othello</h1>
+    <table border="1"></table>
+    <p id="status"><noscript>Error: Javascript required.</noscript></p>
+    <button disabled>New Game</button>
+    <p>By <a href="http://www.hanshq.net/othello.html">hanshq.net</a>.</p>
+    <script src="web_othello.js"></script>
+  </body>
+</html>
