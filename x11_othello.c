@@ -36,6 +36,7 @@ static GC black_gc;
 static GC white_gc;
 static GC board_gc;     /* For the board background. */
 static GC highlight_gc; /* For selected grid cells. */
+static GC valid_gc;
 static XFontStruct *font;
 static Atom wm_delete_window;
 
@@ -79,7 +80,7 @@ static void init(int argc, char **argv)
         XWMHints *wm_hints;
         XClassHint *class_hint;
         unsigned long black_color, white_color, grey_color;
-        unsigned long board_color, hl_color;
+        unsigned long board_color, hl_color, valid_color;
         char *window_name = "Othello";
         XTextProperty window_name_prop;
 
@@ -94,6 +95,7 @@ static void init(int argc, char **argv)
         grey_color  = alloc_color(0xC0, 0xC0, 0xC0);
         board_color = alloc_color(0x00, 0x80, 0x00);
         hl_color    = alloc_color(0x00, 0xAA, 0x00);
+        valid_color = alloc_color(0x00, 0x60, 0x00);
 
         /* Create the window. */
         win = XCreateSimpleWindow(display,
@@ -171,6 +173,9 @@ static void init(int argc, char **argv)
         highlight_gc = XCreateGC(display, win, 0, NULL);
         XSetForeground(display, highlight_gc, hl_color);
 
+        valid_gc = XCreateGC(display, win, 0, NULL);
+        XSetForeground(display, valid_gc, valid_color);
+
         /* Show the window. */
         XMapWindow(display, win);
 }
@@ -231,6 +236,8 @@ static void draw_othello_cell(int row, int col)
                 /* Draw the disk. */
                 XFillArc(display, win, cs == CELL_BLACK ? black_gc : white_gc,
                          x, y, grid.cell_size, grid.cell_size, 0, 360 * 64);
+        } else if (state == BLACKS_MOVE && othello_is_valid_move(&board, PLAYER_BLACK, row, col)) {
+                XFillArc(display, win, valid_gc, x, y, grid.cell_size, grid.cell_size, 0, 360 * 64);
         }
 }
 
@@ -560,6 +567,7 @@ int main(int argc, char **argv)
         XFreeGC(display, white_gc);
         XFreeGC(display, board_gc);
         XFreeGC(display, highlight_gc);
+        XFreeGC(display, valid_gc);
         XFreeFont(display, font);
         XCloseDisplay(display);
 
