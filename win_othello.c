@@ -26,7 +26,7 @@ static struct {
 
 static const char APP_NAME[] = "othello";
 static HBRUSH background_brush, board_brush, highlight_brush,
-              white_brush, black_brush;
+              white_brush, black_brush, valid_brush;
 
 static void err(const char *msg)
 {
@@ -81,6 +81,9 @@ static void draw_othello_cell(HDC dc, int row, int col)
         if ((cs = othello_cell_state(&board, row, col)) != CELL_EMPTY) {
                 /* Draw the disk. */
                 SelectObject(dc, cs == CELL_BLACK ? black_brush : white_brush);
+                Ellipse(dc, x, y, x + grid.cell_size, y + grid.cell_size);
+        } else if (state == BLACKS_MOVE && othello_is_valid_move(&board, PLAYER_BLACK, row, col)) {
+                SelectObject(dc, valid_brush);
                 Ellipse(dc, x, y, x + grid.cell_size, y + grid.cell_size);
         }
 }
@@ -386,6 +389,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prev_instance,
         highlight_brush  = CreateSolidBrush(RGB(0x00, 0xAA, 0x00));
         white_brush      = CreateSolidBrush(RGB(0xFF, 0xFF, 0xFF));
         black_brush      = CreateSolidBrush(RGB(0, 0, 0));
+        valid_brush      = CreateSolidBrush(RGB(0, 0x60, 0));
 
         window_class.style         = CS_HREDRAW | CS_VREDRAW;
         window_class.lpfnWndProc   = &wnd_proc;
@@ -425,6 +429,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE prev_instance,
         DeleteObject(highlight_brush);
         DeleteObject(white_brush);
         DeleteObject(black_brush);
+        DeleteObject(valid_brush);
 
         return message.wParam;
 }

@@ -4,3 +4,5 @@ othello_test.dir/
 othello_text.dir/
 othello_windows.dir/
 Win32/
+
+*.aps
