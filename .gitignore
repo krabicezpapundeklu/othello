@@ -1,0 +1,6 @@
+build/
+othello_bench.dir/
+othello_test.dir/
+othello_text.dir/
+othello_windows.dir/
+Win32/
